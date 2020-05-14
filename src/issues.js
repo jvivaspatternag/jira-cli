@@ -389,9 +389,9 @@ export default class JiraIssues {
         method: 'PUT',
         followAllRedirects: true,
         body: {
-          name: userObj.key
+          accountId: userObj.accountId
         }
-      }).then(function(){
+      }).then(function(res){
         console.log();
         console.log( color.green(`  Issue ${issue} successfully assigned to ${userObj.name}`) );
         console.log();
@@ -538,7 +538,7 @@ export default class JiraIssues {
    * 
    */
   async getAssignableUsers (issueId, userSearch) {
-    return jira.apiRequest(`/user/assignable/search?startAt=0&maxResults=1000&username=${userSearch}&issueKey=${issueId}`);
+    return jira.apiRequest(`/user/assignable/search?startAt=0&maxResults=1000&issueKey=${issueId}`);
   }
 
   /**
@@ -551,7 +551,7 @@ export default class JiraIssues {
       _this.getAssignableUsers(issueId, userSearch).then(function(users){
         var userObjs = [];
         users.forEach(function(user){
-            userObjs.push({ name: `${user.name} <${user.emailAddress}>`, key: user.key});
+            userObjs.push({ name: `${user.displayName}: <${user.emailAddress}>`, accountId: user.accountId});
         });
 
         if(userObjs.length == 0) {
@@ -578,9 +578,9 @@ export default class JiraIssues {
             resolve(res.userObj);
           });
         }
-    }).catch(function(res) {
-      reject(res);
-    });
+      }).catch(function(res) {
+        reject(res);
+      });
     });
   }
     

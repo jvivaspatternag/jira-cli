@@ -17,7 +17,7 @@
   },
   "scripts": {
     "build": "rimraf lib && babel src --out-dir lib",
-    "dev": "watch \"npm run build\" src",
+    "dev": "watch \"npm link\" src",
     "lint": "eslint ./",
     "test": "npm run lint -s",
     "docs": "hugo server --disableFastRender",
